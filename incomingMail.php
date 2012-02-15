@@ -16,6 +16,7 @@ if(!isset($_POST['from']) || !isset($_POST['to']) || !isset($_POST['plain'])) {
 
 $from = $_POST['from'];
 $to = $_POST['to'];
+$subject = $_POST['subject'];
 $plain = $_POST['plain'];
 $html = $_POST['html'];
 $x_remote_ip = $_POST['x_remote_ip'];
@@ -28,14 +29,15 @@ if (!$pdo) {
 
 $insert = <<<SQL
 INSERT INTO `mail`
-    (`date`, `from`, `to`, `plain`, `html`, `x_remote_ip`)
+    (`date`, `from`, `to`, `subject`, `plain`, `html`, `x_remote_ip`)
 VALUES
-    (NOW(), :from, :to, :plain, :html, :x_remote_ip)
+    (NOW(), :from, :to, :subject, :plain, :html, :x_remote_ip)
 SQL;
 
 $insertStmt = $pdo->prepare($insert);
 $insertStmt->bindValue(':from', $from, PDO::PARAM_STR);
 $insertStmt->bindValue(':to', $to, PDO::PARAM_STR);
+$insertStmt->bindValue(':subject', $subject, PDO::PARAM_STR);
 $insertStmt->bindValue(':plain', $plain, PDO::PARAM_STR);
 $insertStmt->bindValue(':html', $html, PDO::PARAM_STR);
 $insertStmt->bindValue(':x_remote_ip', $x_remote_ip, PDO::PARAM_STR);

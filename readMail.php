@@ -6,6 +6,7 @@ class MailDto {
     public $date;
     public $from;
     public $to;
+    public $subject;
     public $plain;
     public $html;
     public $x_remote_ip;
@@ -19,7 +20,7 @@ if (!$pdo) {
 }
 
 $select = <<<SQL
-SELECT `date`, `from`, `to`, `plain`, `html`, `x_remote_ip` FROM `mail`
+SELECT `date`, `from`, `to`, `subject`, `plain`, `html`, `x_remote_ip` FROM `mail`
 SQL;
 
 $result = array();
