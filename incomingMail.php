@@ -10,6 +10,8 @@ function myerror($msg) {
 }
 
 function verifySignature(){
+    global $config;
+    
     $provided = $_POST['signature'];
     unset($_POST['signature']);
     
@@ -25,6 +27,8 @@ function verifySignature(){
 }
 
 function storeMail() {
+    global $config;
+    
     $from = $_POST['from'];
     $to = $_POST['to'];
     $subject = $_POST['subject'];
@@ -58,7 +62,7 @@ if(!isset($_POST['from']) || !isset($_POST['to']) || !isset($_POST['plain'])) {
     myerror("missing data");
 }
 
-
+verifySignature();
 storeMail();
 
 if($execute){
