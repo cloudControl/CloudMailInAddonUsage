@@ -21,6 +21,7 @@ $select = <<<SQL
 SELECT date, from, to, plain FROM `mail`
 SQL;
 
+$result = array();
 $pdo->beginTransaction();
 $selectStmt = $pdo->prepare($select);
 if ($selectStmt->execute()) {
