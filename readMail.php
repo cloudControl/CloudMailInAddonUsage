@@ -6,7 +6,9 @@ class MailDto {
     public $date;
     public $from;
     public $to;
-    public $post;
+    public $plain;
+    public $html;
+    public $x_remote_ip;
 }
 
 $dsn = sprintf('mysql:host=%s;dbname=%s', $config['MYSQL_HOSTNAME'], $config['MYSQL_DATABASE']);
@@ -17,7 +19,7 @@ if (!$pdo) {
 }
 
 $select = <<<SQL
-SELECT `date`, `from`, `to`, `post` FROM `mail`
+SELECT `date`, `from`, `to`, `plain`, `html`, `x_remote_ip` FROM `mail`
 SQL;
 
 $result = array();
@@ -28,12 +30,6 @@ if ($selectStmt->execute()) {
     $selectStmt->closeCursor();
 }
 $pdo->commit();
-
-if(count($result) > 0){
-    array_walk($result, function($mail){
-        $mail->post = unserialize($mail->post);
-    });
-}
 ?>
 <!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
