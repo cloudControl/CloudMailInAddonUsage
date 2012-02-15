@@ -5,10 +5,13 @@ $from = $_POST['from'];
 $to = $_POST['to'];
 $plain_text = $_POST['plain'];
 
+print_r($_POST);
+
 $dsn = sprintf('mysql:host=%s;dbname=%s', $config['MYSQL_HOSTNAME'], $config['MYSQL_DATABASE']);
 $pdo = new PDO($dsn, $config['MYSQL_USERNAME'], $config['MYSQL_PASSWORD']);
 if (!$pdo) {
-    throw new Exception("No database connection", 1);
+    print "No database connection";
+    exit;
 }
 
 $insert = <<<SQL
