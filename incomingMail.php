@@ -24,7 +24,7 @@ $insert = <<<SQL
 INSERT INTO `mail`
     (date, from, to, plain)
 VALUES
-    (NOW(), :from, :to, :plain)
+    (NOW(), ":from", ":to", ":plain")
 SQL;
 
 $insertStmt = $pdo->prepare($insert);
