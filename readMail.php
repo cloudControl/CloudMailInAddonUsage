@@ -2,7 +2,6 @@
 require 'error.php';
 require 'config.php';
 
-
 class MailDto {
     public $date;
     public $from;
@@ -29,6 +28,16 @@ if ($selectStmt->execute()) {
     $selectStmt->closeCursor();
 }
 $pdo->commit();
-print_r($result);
-exit;
 ?>
+<!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head></head>
+    <body>
+        <h1>Mails</h1>
+        <pre style="disply:block;background-color:silver;border:1px groove;padding:5px;">
+            <?php
+                print_r($result);
+            ?>
+        </pre>
+    </body>
+</html>

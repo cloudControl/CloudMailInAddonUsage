@@ -39,8 +39,6 @@ $execute = $insertStmt->execute();
 
 if($execute){
     header("HTTP/1.0 200 OK");
-    echo('success');
 } else {
     myerror('database error');
 }
-
