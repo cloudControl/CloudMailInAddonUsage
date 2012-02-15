@@ -1,5 +1,4 @@
 <?php
-
 $html = '
  <html>
     <head></head>
@@ -13,14 +12,14 @@ $html = '
 
 function myErrorHandler($errno, $errstr, $errfile, $errline) {
     global $html;
-    echo sprintf($html, print_r(array($errno, $errstr, $errfile, $errline), true));
-    die();
+    //echo sprintf($html, print_r(array($errno, $errstr, $errfile, $errline), true));
+    //die();
 }
 set_error_handler("myErrorHandler");
 
 function shutDownFunction() {
     global $html;
-    echo sprintf($html, print_r(error_get_last(), true));
-    die();
+    //echo sprintf($html, print_r(error_get_last(), true));
+    //die();
 }
 register_shutdown_function('shutdownFunction');
