@@ -14,8 +14,10 @@ function verifySignature(){
 
     $provided = $_POST['signature'];
     $params = $_POST;
-    sort($params);
     unset($params['signature']);
+    
+    ksort($params);
+    
     $str = implode('', array_values($params));
     $signature = md5($str . $config['CLOUDMAILIN_SECRET']);
     
