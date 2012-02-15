@@ -29,11 +29,11 @@ if ($selectStmt->execute()) {
 }
 $pdo->commit();
 
-if(count($result) > 0){
-    array_walk($result, function($mail){
-        $mail->post = unserialize($mail->post);
-    });
-}
+#if(count($result) > 0){
+#    array_walk($result, function($mail){
+#        $mail->post = unserialize($mail->post);
+#    });
+#}
 ?>
 <!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -42,7 +42,7 @@ if(count($result) > 0){
         <h1>Mails</h1>
         <pre style="disply:block;background-color:silver;border:1px groove;padding:5px;">
             <?php
-                print_r($result);
+print_r($result);
             ?>
         </pre>
     </body>
