@@ -1,5 +1,4 @@
 <?php
-require 'error.php';
 require 'config.php';
 
 header("Content-type: text/plain");
