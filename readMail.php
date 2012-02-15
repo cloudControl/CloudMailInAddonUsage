@@ -1,7 +1,7 @@
 <?php
 require 'config.php';
 
-class MailDto {
+class MailData {
     public $date;
     public $from;
     public $to;
@@ -26,7 +26,7 @@ $result = array();
 $pdo->beginTransaction();
 $selectStmt = $pdo->prepare($select);
 if ($selectStmt->execute()) {
-    $result = $selectStmt->fetchAll(PDO::FETCH_CLASS, 'MailDto');
+    $result = $selectStmt->fetchAll(PDO::FETCH_CLASS, 'MailData');
     $selectStmt->closeCursor();
 }
 $pdo->commit();

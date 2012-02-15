@@ -1,6 +1,5 @@
 <?php
 require 'config.php';
-
 header("Content-type: text/plain");
 
 function myerror($msg) {
@@ -18,13 +17,13 @@ function verifySignature(){
     ksort($params);
     $str = implode('', array_values($params));
     $signature = md5($str . $config['CLOUDMAILIN_SECRET']);
-    
+
     return $provided == $signature;
 }
 
 function storeMail() {
     global $config;
-    
+
     $from = $_POST['from'];
     $to = $_POST['to'];
     $subject = $_POST['subject'];
@@ -57,13 +56,10 @@ SQL;
 if(!isset($_POST['from']) || !isset($_POST['to']) || !isset($_POST['plain'])) {
     myerror("missing data");
 }
-
 if (!verifySignature()) {
     myerror('verification error');
 }
-
-if(storeMail()){
-    header("HTTP/1.0 200 OK");
-} else {
+if(!storeMail()){
     myerror('database error');
 }
+header("HTTP/1.0 200 OK");
