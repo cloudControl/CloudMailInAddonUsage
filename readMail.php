@@ -8,6 +8,9 @@ class MailDto {
     public $plain;
 }
 
+print_r(new MailDto());
+exit;
+
 $dsn = sprintf('mysql:host=%s;dbname=%s', $config['MYSQL_HOSTNAME'], $config['MYSQL_DATABASE']);
 $pdo = new PDO($dsn, $config['MYSQL_USERNAME'], $config['MYSQL_PASSWORD']);
 if (!$pdo) {

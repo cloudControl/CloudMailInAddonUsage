@@ -20,6 +20,8 @@ if ($string == false) {
 # the file contains a JSON string, decode it and return an associative array
 $creds = json_decode($string, true);
 
+print_r($creds);
+
 # use credentials to set the configuration for MySQL
 $config = array(
     'MYSQL_HOSTNAME' => $creds['MYSQLS']['MYSQLS_HOSTNAME'],
