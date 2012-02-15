@@ -19,8 +19,7 @@ function verifySignature(){
     $str = implode('', array_values($params));
     $signature = md5($str . $config['CLOUDMAILIN_SECRET']);
     
-    echo ">>" , $provided , "<< \n";
-    echo ">>" , $signature , "<< \n";
+    return $provided == $signature;
 }
 
 function storeMail() {
@@ -59,7 +58,9 @@ if(!isset($_POST['from']) || !isset($_POST['to']) || !isset($_POST['plain'])) {
     myerror("missing data");
 }
 
-verifySignature();
+if (!verifySignature()) {
+    myerror('verification error');
+}
 
 if(storeMail()){
     header("HTTP/1.0 200 OK");
