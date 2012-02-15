@@ -11,17 +11,16 @@ function myerror($msg) {
 
 function verifySignature(){
     global $config;
-    
+
     $provided = $_POST['signature'];
-        
     $params = $_POST;
     sort($params);
     unset($params['signature']);
     $str = implode('', array_values($params));
     $signature = md5($str . $config['CLOUDMAILIN_SECRET']);
     
-    echo $provided . " \n";
-    echo $signature . "\n";
+    echo ">>" , $provided , "<< \n";
+    echo ">>" , $signature , "<< \n";
 }
 
 function storeMail() {
