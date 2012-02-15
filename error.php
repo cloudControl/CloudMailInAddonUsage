@@ -1,6 +1,6 @@
 <?php
 
-$html = <<<html
+$html = '
  <html>
     <head></head>
     <body>
@@ -9,8 +9,7 @@ $html = <<<html
             %s
         </pre>
     </body>
-</html>
-html;
+</html>';
 
 function myErrorHandler($errno, $errstr, $errfile, $errline) {
     global $html;
