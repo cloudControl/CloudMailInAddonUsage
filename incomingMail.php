@@ -18,8 +18,8 @@ function verifySignature(){
     $str = implode('', array_values($_POST));
     $signature = md5($str . $config['CLOUDMAILIN_SECRET']);
     
-    print $provided . "\n";
-    print $signature . "\n";
+    echo $provided . " \n";
+    echo $signature . "\n";
 }
 
 function storeMail() {
@@ -59,9 +59,8 @@ if(!isset($_POST['from']) || !isset($_POST['to']) || !isset($_POST['plain'])) {
 }
 
 verifySignature();
-storeMail();
 
-if($execute){
+if(storeMail()){
     header("HTTP/1.0 200 OK");
 } else {
     myerror('database error');
