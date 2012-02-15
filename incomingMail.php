@@ -16,7 +16,6 @@ if(!isset($_POST['from']) || !isset($_POST['to']) || !isset($_POST['plain'])) {
 
 $from = $_POST['from'];
 $to = $_POST['to'];
-$plain = $_POST['plain'];
 
 $dsn = sprintf('mysql:host=%s;dbname=%s', $config['MYSQL_HOSTNAME'], $config['MYSQL_DATABASE']);
 $pdo = new PDO($dsn, $config['MYSQL_USERNAME'], $config['MYSQL_PASSWORD']);
@@ -26,15 +25,15 @@ if (!$pdo) {
 
 $insert = <<<SQL
 INSERT INTO `mail`
-    (`date`, `from`, `to`, `plain`)
+    (`date`, `from`, `to`, `post`)
 VALUES
-    (NOW(), :from, :to, :plain)
+    (NOW(), :from, :to, :post)
 SQL;
 
 $insertStmt = $pdo->prepare($insert);
 $insertStmt->bindValue(':from', $from, PDO::PARAM_STR);
 $insertStmt->bindValue(':to', $to, PDO::PARAM_STR);
-$insertStmt->bindValue(':plain', $plain, PDO::PARAM_STR);
+$insertStmt->bindValue(':post', serialize($_POST), PDO::PARAM_STR);
 $execute = $insertStmt->execute();
 
 if($execute){

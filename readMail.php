@@ -6,7 +6,7 @@ class MailDto {
     public $date;
     public $from;
     public $to;
-    public $plain;
+    public $post;
 }
 
 $dsn = sprintf('mysql:host=%s;dbname=%s', $config['MYSQL_HOSTNAME'], $config['MYSQL_DATABASE']);
@@ -28,6 +28,12 @@ if ($selectStmt->execute()) {
     $selectStmt->closeCursor();
 }
 $pdo->commit();
+
+if(count($result)){
+    array_walk($result, function($mail){
+        $mail->post = unserialize($mail->post));
+    });
+}
 ?>
 <!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
