@@ -15,15 +15,10 @@ function verifySignature(){
     $provided = $_POST['signature'];
     $params = $_POST;
     unset($params['signature']);
-    
     ksort($params);
-    
     $str = implode('', array_values($params));
     $signature = md5($str . $config['CLOUDMAILIN_SECRET']);
     
-    if ($provided != $signature) {
-        myerror("$provided == $signature");
-    }
     return $provided == $signature;
 }
 
