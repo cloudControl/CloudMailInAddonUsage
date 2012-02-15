@@ -29,7 +29,7 @@ if ($selectStmt->execute()) {
 }
 $pdo->commit();
 
-if(count($result)){
+if(count($result) > 0){
     array_walk($result, function($mail){
         $mail->post = unserialize($mail->post);
     });
