@@ -27,14 +27,9 @@ VALUES
     (NOW(), :from, :to, :plain)
 SQL;
 
-$pdo->beginTransaction();
 $insertStmt = $pdo->prepare($insert);
 $insertStmt->bindValue(':from', $from, PDO::PARAM_STR);
 $insertStmt->bindValue(':to', $to, PDO::PARAM_STR);
 $insertStmt->bindValue(':plain', $plain_text, PDO::PARAM_STR);
-if ($insertStmt->execute()) {
-    $insertStmt->closeCursor();
-}
-$pdo->commit();
-exit;
-?>
+$execute = $insertStmt->execute();
+print_r($execute);
