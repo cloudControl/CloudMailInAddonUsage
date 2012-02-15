@@ -31,7 +31,8 @@ $pdo->commit();
 
 if(count($result)){
     array_walk($result, function($mail){
-        $mail->post = unserialize($mail->post));
+        yy
+        $mail->post = unserialize($mail->post);
     });
 }
 ?>
