@@ -13,9 +13,11 @@ function verifySignature(){
     global $config;
     
     $provided = $_POST['signature'];
-    unset($_POST['signature']);
-    
-    $str = implode('', array_values($_POST));
+        
+    $params = $_POST;
+    sort($params);
+    unset($params['signature']);
+    $str = implode('', array_values($params));
     $signature = md5($str . $config['CLOUDMAILIN_SECRET']);
     
     echo $provided . " \n";
