@@ -18,7 +18,7 @@ if (!$pdo) {
 }
 
 $select = <<<SQL
-SELECT date, from, to, plain FROM `mail`
+SELECT `date`, `from`, `to`, `plain` FROM `mail`
 SQL;
 
 $result = array();
