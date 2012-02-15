@@ -1,4 +1,7 @@
 <?php
+/**
+ * the script reads e-mail messages from database 
+ */
 require 'config.php';
 
 class MailData {
@@ -18,13 +21,9 @@ if (!$pdo) {
     exit;
 }
 
-$select = <<<SQL
-SELECT `date`, `from`, `to`, `subject`, `plain`, `html`, `x_remote_ip` FROM `mail`
-SQL;
-
 $result = array();
 $pdo->beginTransaction();
-$selectStmt = $pdo->prepare($select);
+$selectStmt = $pdo->prepare('SELECT `date`, `from`, `to`, `subject`, `plain`, `html`, `x_remote_ip` FROM `mail`');
 if ($selectStmt->execute()) {
     $result = $selectStmt->fetchAll(PDO::FETCH_CLASS, 'MailData');
     $selectStmt->closeCursor();
