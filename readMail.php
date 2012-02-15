@@ -1,18 +1,6 @@
 <?php
+require 'error.php';
 require 'config.php';
-
-function myErrorHandler($errno, $errstr, $errfile, $errline) {
-    print_r(array($errno, $errstr, $errfile, $errline));
-}
-
-set_error_handler("myErrorHandler");
-
-function shutDownFunction() {
-    print_r(error_get_last());
-}
-
-register_shutdown_function('shutdownFunction');
-
 
 
 class MailDto {
@@ -33,6 +21,7 @@ $select = <<<SQL
 SELECT date, from, to, plain FROM `mail`
 SQL;
 
+$pdo->beginTransaction();
 $selectStmt = $pdo->prepare($select);
 if ($selectStmt->execute()) {
     $result = $selectStmt->fetchAll(PDO::FETCH_CLASS, 'MailDto');

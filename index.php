@@ -1,3 +1,4 @@
 <?php
+require 'error.php';
 require 'config.php';
-print_r($creds);
+var_dump($creds);
