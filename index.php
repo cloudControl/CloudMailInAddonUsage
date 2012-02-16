@@ -15,8 +15,11 @@ target="_blank">cloudControl</a>
 CloudMailIn addon</a> provides incoming email for your app.
             </p>
             <p>
-                The goal in this mini app is to store the incoming
-messages to - in this case - a database.
+                The mini app's goal is - <span style="font-weight: bold;">in this case</span> - to store the incoming
+messages to a database. <br/>
+                For your special needs overwrite th handleMail function in "incomingMail.php". <br/>
+            </p>
+            <p>
                 To run the app you need a cloudControl MySQLs
 addon and naturally a cloudControl CloudMailIn addon.
             </p>
