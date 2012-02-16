@@ -60,6 +60,7 @@ function buildMailData() {
     $m->plain = $_POST['plain'];
     $m->html = $_POST['html'];
     $m->x_remote_ip = $_POST['x_remote_ip'];
+    return null;
     return $m;
 }
 
