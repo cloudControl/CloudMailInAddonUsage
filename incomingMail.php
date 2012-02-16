@@ -8,6 +8,7 @@
  *  - store some e-mail data in the database
  */
 require 'config.php';
+require 'mailData.php';
 
 // the content type to answer the cloudmailin request
 header("Content-type: text/plain");
@@ -46,19 +47,30 @@ function verifySignature(){
 }
 
 /**
+ * build the mailData object
+ * feel free to validate the fields
+ * in case of invalid data return null
+ * @return \MailData 
+ */
+function buildMailData() {
+    $m = new MailData();
+    $m->from = $_POST['from'];
+    $m->to = $_POST['to'];
+    $m->subject = $_POST['subject'];
+    $m->plain = $_POST['plain'];
+    $m->html = $_POST['html'];
+    $m->x_remote_ip = $_POST['x_remote_ip'];
+    return $m;
+}
+
+/**
  * store some e-mail data in the database
+ * @param MailData $mailData
  * @return boolean
  */
-function storeMail() {
+function handleMail(MailData $mailData) {
     $config = new ConfigReader();
     $mysqlsConfig = $config->getAddonConfig('MYSQLS');
-
-    $from = $_POST['from'];
-    $to = $_POST['to'];
-    $subject = $_POST['subject'];
-    $plain = $_POST['plain'];
-    $html = $_POST['html'];
-    $x_remote_ip = $_POST['x_remote_ip'];
 
     $dsn = sprintf('mysql:host=%s;dbname=%s', $mysqlsConfig['MYSQLS_HOSTNAME'], $mysqlsConfig['MYSQLS_DATABASE']);
     $pdo = new PDO($dsn, $mysqlsConfig['MYSQLS_USERNAME'], $mysqlsConfig['MYSQLS_PASSWORD']);
@@ -75,12 +87,12 @@ SQL;
 
     $pdo->beginTransaction();
     $insertStmt = $pdo->prepare($insert);
-    $insertStmt->bindValue(':from', $from, PDO::PARAM_STR);
-    $insertStmt->bindValue(':to', $to, PDO::PARAM_STR);
-    $insertStmt->bindValue(':subject', $subject, PDO::PARAM_STR);
-    $insertStmt->bindValue(':plain', $plain, PDO::PARAM_STR);
-    $insertStmt->bindValue(':html', $html, PDO::PARAM_STR);
-    $insertStmt->bindValue(':x_remote_ip', $x_remote_ip, PDO::PARAM_STR);
+    $insertStmt->bindValue(':from', $mailData->from, PDO::PARAM_STR);
+    $insertStmt->bindValue(':to', $mailData->to, PDO::PARAM_STR);
+    $insertStmt->bindValue(':subject', $mailData->subject, PDO::PARAM_STR);
+    $insertStmt->bindValue(':plain', $mailData->plain, PDO::PARAM_STR);
+    $insertStmt->bindValue(':html', $mailData->html, PDO::PARAM_STR);
+    $insertStmt->bindValue(':x_remote_ip', $mailData->x_remote_ip, PDO::PARAM_STR);
     $result = $insertStmt->execute();
     $insertStmt->closeCursor();
     $pdo->commit();
@@ -96,7 +108,11 @@ if(!isset($_POST['from'])
 if (!verifySignature()) {
     myerror('verification error', 403);
 }
-if(!storeMail()){
+$mailData = buildMailData();
+if(!$mailData) {
+    myerror('invalid data', 400);
+}
+if(!handleMail($mailData)){
     myerror('database error', 500);
 }
 header("HTTP/1.0 200 OK");

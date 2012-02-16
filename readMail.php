@@ -3,16 +3,7 @@
  * the script reads e-mail messages from database
  */
 require 'config.php';
-
-class MailData {
-    public $date;
-    public $from;
-    public $to;
-    public $subject;
-    public $plain;
-    public $html;
-    public $x_remote_ip;
-}
+require 'mailData.php';
 
 $config = new ConfigReader();
 $mysqlsConfig = $config->getAddonConfig('MYSQLS');
