@@ -48,11 +48,18 @@ function verifySignature(){
 
 /**
  * build the mailData object
- * feel free to validate the fields
+ * feel free to validate the fields as you need
  * in case of invalid data return null
  * @return \MailData 
  */
 function buildMailData() {
+    if(!isset($_POST['from']) 
+        || !isset($_POST['to']) 
+        || !isset($_POST['plain'])
+        || !isset($_POST['subject'])) {
+        return null;
+    }
+    
     $m = new MailData();
     $m->from = $_POST['from'];
     $m->to = $_POST['to'];
@@ -99,19 +106,15 @@ SQL;
     return $result;
 }
 
-if(!isset($_POST['from']) 
-    || !isset($_POST['to']) 
-    || !isset($_POST['plain'])
-    || !isset($_POST['subject'])) {
-    myerror("missing data", 400);
-}
 if (!verifySignature()) {
     myerror('verification error', 403);
 }
+
 $mailData = buildMailData();
 if(!$mailData) {
-    myerror('invalid data', 400);
+    myerror('invalid or missing data', 400);
 }
+
 if(!handleMail($mailData)){
     myerror('database error', 500);
 }
