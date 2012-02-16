@@ -1,6 +1,6 @@
 <?php
 /**
- * the script reads e-mail messages from database 
+ * the script reads e-mail messages from database
  */
 require 'config.php';
 
@@ -14,8 +14,10 @@ class MailData {
     public $x_remote_ip;
 }
 
-$dsn = sprintf('mysql:host=%s;dbname=%s', $config['MYSQL_HOSTNAME'], $config['MYSQL_DATABASE']);
-$pdo = new PDO($dsn, $config['MYSQL_USERNAME'], $config['MYSQL_PASSWORD']);
+$config = new ConfigReader();
+$mysqlsConfig = $config->getAddonConfig('MYSQLS');
+$dsn = sprintf('mysql:host=%s;dbname=%s', $mysqlsConfig['MYSQLS_HOSTNAME'], $mysqlsConfig['MYSQLS_DATABASE']);
+$pdo = new PDO($dsn, $mysqlsConfig['MYSQLS_USERNAME'], $mysqlsConfig['MYSQLS_PASSWORD']);
 if (!$pdo) {
     print "No database connection";
     exit;

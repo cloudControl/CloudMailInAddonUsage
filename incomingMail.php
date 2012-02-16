@@ -7,7 +7,6 @@
  *  - verify the e-mail by the requests signature
  *  - store some e-mail data in the database
  */
-
 require 'config.php';
 
 // the content type to answer the cloudmailin request
@@ -19,35 +18,40 @@ header("Content-type: text/plain");
  * @param int $code 
  */
 function myerror($msg, $code = 403) {
-    header(sprintf("HTTP/1.0 %d OK", $code));
+    $httpError = array(
+        400 => "Bad Request",
+        403 => "Forbidden",
+        500 => "Internal Server Error"
+    );
+    header(sprintf("HTTP/1.0 %d %s", $code, $httpError[$code]));
     echo($msg);
     exit;
 }
 
 /**
  * verify the e-mail by the requests signature
- * @global array $config
  * @return boolean 
  */
 function verifySignature(){
-    global $config;
-
+    $config = new ConfigReader();
+    $cloudmailinConfig = $config->getAddonConfig('CLOUDMAILIN');
+    
     $provided = $_POST['signature'];
     $params = $_POST;
     unset($params['signature']);
     ksort($params);
     $str = implode('', array_values($params));
-    $signature = md5($str . $config['CLOUDMAILIN_SECRET']);
+    $signature = md5($str . $cloudmailinConfig['CLOUDMAILIN_SECRET']);
     return $provided == $signature;
 }
 
 /**
  * store some e-mail data in the database
- * @global array $config
  * @return boolean
  */
 function storeMail() {
-    global $config;
+    $config = new ConfigReader();
+    $mysqlsConfig = $config->getAddonConfig('MYSQLS');
 
     $from = $_POST['from'];
     $to = $_POST['to'];
@@ -56,10 +60,10 @@ function storeMail() {
     $html = $_POST['html'];
     $x_remote_ip = $_POST['x_remote_ip'];
 
-    $dsn = sprintf('mysql:host=%s;dbname=%s', $config['MYSQL_HOSTNAME'], $config['MYSQL_DATABASE']);
-    $pdo = new PDO($dsn, $config['MYSQL_USERNAME'], $config['MYSQL_PASSWORD']);
+    $dsn = sprintf('mysql:host=%s;dbname=%s', $mysqlsConfig['MYSQLS_HOSTNAME'], $mysqlsConfig['MYSQLS_DATABASE']);
+    $pdo = new PDO($dsn, $mysqlsConfig['MYSQLS_USERNAME'], $mysqlsConfig['MYSQLS_PASSWORD']);
     if (!$pdo) {
-        myerror("No database connection");
+        return false;
     }
 
     $insert = <<<SQL
@@ -83,13 +87,16 @@ SQL;
     return $result;
 }
 
-if(!isset($_POST['from']) || !isset($_POST['to']) || !isset($_POST['plain'])) {
-    myerror("missing data");
+if(!isset($_POST['from']) 
+    || !isset($_POST['to']) 
+    || !isset($_POST['plain'])
+    || !isset($_POST['subject'])) {
+    myerror("missing data", 400);
 }
 if (!verifySignature()) {
-    myerror('verification error');
+    myerror('verification error', 403);
 }
 if(!storeMail()){
-    myerror('database error');
+    myerror('database error', 500);
 }
 header("HTTP/1.0 200 OK");
