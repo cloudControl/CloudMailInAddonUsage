@@ -1,16 +1,15 @@
 CloudmailIn for cloudControl
 
-This mini app on cloudControl
-shows the usage of the CloudMailIn addon.
+This mini app on cloudControl shows the usage of the CloudMailIn addon.
 
 The CloudMailIn addon provides incoming email for your app.
 
 The mini app's goal is - in this case - to store the incoming messages to a 
 database.
-For your special needs overwrite th handleMail function in "incomingMail.php". 
+For your special needs overwrite the handleMail function in "incomingMail.php". 
 
-To run the app you need a cloudControl MySQLs addon and naturally a 
-cloudControl CloudMailIn addon.
+To run the app you need a cloudControl MySQLs addon and naturally a cloudControl 
+CloudMailIn addon.
 
 To run this app you have to
 
